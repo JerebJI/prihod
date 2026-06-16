@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Prihod K</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-size: 4rem;
+        background-image: url("media/china.jpg");
+        background-size: cover;
+        background-position: center;
+      }
+      img {
+        position: fixed;
+        width: 80px;
+        height: 80px;
+        user-select: none;
+        pointer-events: none;
+      }
+      .timer {
+        z-index: 1;
+        font-weight: bold;
+        font-size: 5rem;
+        background: rgba(255, 0,  0, 1);
+      }
+
+      #pet-embed {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border: none;
+        z-index: 9999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="k">K</div>
+    <p style="background: rgba(255, 0,  0, 1);">KETOS pride čez</p></br>
+    <div class="timer" id="timer"></div>
+    <div class="k">K</div>
+
+    <iframe id="pet-embed" width="314" height="321" scrolling="no" src="https://gify.pet/pet/pet.html?name=Hijek 2&dob=1781630853&gender=f&element=Earth&pet=cat.gif&map=forest.jpg&background=1995.png&tablecolor=%23ff0000&textcolor=%23000000" frameborder="0"></iframe>
+
+    <script>
+      const target = new Date("2026-06-24T06:59:59");
+
+      function update() {
+        const diff = target - new Date();
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+        const mins = Math.floor(diff / (1000 * 60)) % 60;
+        const secs = Math.floor(diff / 1000) % 60;
+
+        document.getElementById("timer").textContent =
+          `${days} dni ${hours} ur ${mins} min ${secs} sekund`;
+      }
+
+      setInterval(update, 1000);
+      update();
+    </script>
+
+    <style>
+      .k {
+        font-size: 400px;
+        font-weight: bold;
+        color: yellow;
+        opacity: 0.5;
+        animation: spin 3s linear infinite;
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+
+    <script>
+      const images = [];
+      const count = 10;
+
+      // create 10 images
+      for (let i = 0; i < count; i++) {
+        const img = document.createElement("img");
+        img.src = "./media/magic.jpg";
+
+        document.body.appendChild(img);
+
+        images.push({
+          el: img,
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          vx: (Math.random() + 2) * (Math.random() < 0.5 ? -1 : 1),
+          vy: (Math.random() + 2) * (Math.random() < 0.5 ? -1 : 1),
+          angle: Math.random() * 360,
+          spin: Math.random() * 6 - 3,
+        });
+      }
+
+      function animate1() {
+        for (const obj of images) {
+          obj.x += obj.vx;
+          obj.y += obj.vy;
+          obj.angle += obj.spin;
+
+          const size = 80;
+
+          // bounce X
+          if (obj.x <= 0 || obj.x >= window.innerWidth - size) {
+            obj.vx *= -1;
+          }
+
+          // bounce Y
+          if (obj.y <= 0 || obj.y >= window.innerHeight - size) {
+            obj.vy *= -1;
+          }
+
+          obj.el.style.left = obj.x + "px";
+          obj.el.style.top = obj.y + "px";
+          obj.el.style.transform = `rotate(${obj.angle}deg)`;
+        }
+
+        requestAnimationFrame(animate1);
+      }
+
+      animate1();
+
+      window.addEventListener("resize", () => {
+        // nothing required, keeps running fine
+      });
+    </script>
+
+    <script>
+      const img = document.createElement("img");
+
+      img.src = "./media/hijek.jpg";
+
+      Object.assign(img.style, {
+        position: "fixed",
+        width: "100px",
+        height: "100px",
+        left: "100px",
+        top: "100px",
+        pointerEvents: "none",
+        userSelect: "none",
+      });
+
+      document.body.appendChild(img);
+
+      let x = 100;
+      let y = 100;
+      let vx = 4;
+      let vy = 3;
+
+      function animate() {
+        x += vx;
+        y += vy;
+
+        const w = img.offsetWidth;
+        const h = img.offsetHeight;
+
+        if (x <= 0 || x >= window.innerWidth - w) {
+          vx *= -1;
+        }
+
+        if (y <= 0 || y >= window.innerHeight - h) {
+          vy *= -1;
+        }
+
+        img.style.left = `${x}px`;
+        img.style.top = `${y}px`;
+
+        requestAnimationFrame(animate);
+      }
+
+      img.onload = animate;
+    </script>
+  </body>
+</html>
