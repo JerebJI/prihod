@@ -10,7 +10,7 @@
         align-items: center;
         height: 100vh;
         font-size: 4rem;
-        background-image: url("media/china.jpg");
+        background-image: url("./media/china.jpg");
         background-size: cover;
         background-position: center;
       }
@@ -27,24 +27,41 @@
         font-size: 5rem;
         background: rgba(255, 0,  0, 1);
       }
+      .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+      .containerhor {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+#pet-embed {
+  position: fixed;
+  top: 50%;
+  left: 50%;
 
-      #pet-embed {
-        position: fixed;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        border: none;
-        z-index: 9999;
-      }
+  transform: translate(-50%, -50%);
+
+  border: none;
+  z-index: 9999;
+}
     </style>
   </head>
   <body>
-    <div class="k">K</div>
-    <p style="background: rgba(255, 0,  0, 1);">KETOS pride čez</p></br>
-    <div class="timer" id="timer"></div>
-    <div class="k">K</div>
+    <div class="container">
+      <div class="containerhor">
+        <div class="k">K</div>
+        <p style="background: rgba(255, 0,  0, 1);">KETOS pride čez</p></br>
+        <div class="timer" id="timer"></div>
+        <div class="k">K</div>
+      </div>
+      <iframe id="" width="314" height="321" scrolling="no" src="https://gify.pet/pet/pet.html?name=Hijek 2&dob=1781630853&gender=f&element=Earth&pet=cat.gif&map=forest.jpg&background=1995.png&tablecolor=%23ff0000&textcolor=%23000000" frameborder="0"></iframe>
+    </div>
 
-    <iframe id="pet-embed" width="314" height="321" scrolling="no" src="https://gify.pet/pet/pet.html?name=Hijek 2&dob=1781630853&gender=f&element=Earth&pet=cat.gif&map=forest.jpg&background=1995.png&tablecolor=%23ff0000&textcolor=%23000000" frameborder="0"></iframe>
 
     <script>
       const target = new Date("2026-06-24T06:59:59");
@@ -85,60 +102,66 @@
     </style>
 
     <script>
-      const images = [];
-      const count = 10;
+const COUNT = 10;
+const items = [];
 
-      // create 10 images
-      for (let i = 0; i < count; i++) {
-        const img = document.createElement("img");
-        img.src = "./media/magic.jpg";
+let W = window.innerWidth;
+let H = window.innerHeight;
 
-        document.body.appendChild(img);
+// 🔥 CRITICAL FIX: use visualViewport if available
+function updateSize() {
+  W = window.innerWidth;
+  H = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+}
 
-        images.push({
-          el: img,
-          x: Math.random() * window.innerWidth,
-          y: Math.random() * window.innerHeight,
-          vx: (Math.random() + 2) * (Math.random() < 0.5 ? -1 : 1),
-          vy: (Math.random() + 2) * (Math.random() < 0.5 ? -1 : 1),
-          angle: Math.random() * 360,
-          spin: Math.random() * 6 - 3,
-        });
-      }
+updateSize();
 
-      function animate1() {
-        for (const obj of images) {
-          obj.x += obj.vx;
-          obj.y += obj.vy;
-          obj.angle += obj.spin;
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", updateSize);
+} else {
+  window.addEventListener("resize", updateSize);
+}
 
-          const size = 80;
+for (let i = 0; i < COUNT; i++) {
+  const el = document.createElement("img");
+  el.src = "./media/magic.jpg";
+  document.body.appendChild(el);
 
-          // bounce X
-          if (obj.x <= 0 || obj.x >= window.innerWidth - size) {
-            obj.vx *= -1;
-          }
+  items.push({
+    el,
+    x: Math.random() * (W - 50),
+    y: Math.random() * (H - 50),
+    vx: (Math.random() * 4 + 2) * (Math.random() < 0.5 ? -1 : 1),
+    vy: (Math.random() * 4 + 2) * (Math.random() < 0.5 ? -1 : 1),
+    angle: Math.random() * 360,
+    spin: Math.random() * 4 - 2
+  });
+}
 
-          // bounce Y
-          if (obj.y <= 0 || obj.y >= window.innerHeight - size) {
-            obj.vy *= -1;
-          }
+function animate() {
+  for (const o of items) {
+    o.x += o.vx;
+    o.y += o.vy;
+    o.angle += o.spin;
 
-          obj.el.style.left = obj.x + "px";
-          obj.el.style.top = obj.y + "px";
-          obj.el.style.transform = `rotate(${obj.angle}deg)`;
-        }
+    const size = 50;
 
-        requestAnimationFrame(animate1);
-      }
+    if (o.x <= 0 || o.x >= W - size) o.vx *= -1;
+    if (o.y <= 0 || o.y >= H - size) o.vy *= -1;
 
-      animate1();
+    o.x = Math.max(0, Math.min(W - size, o.x));
+    o.y = Math.max(0, Math.min(H - size, o.y));
 
-      window.addEventListener("resize", () => {
-        // nothing required, keeps running fine
-      });
-    </script>
+    o.el.style.left = o.x + "px";
+    o.el.style.top = o.y + "px";
+    o.el.style.transform = `rotate(${o.angle}deg)`;
+  }
 
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
     <script>
       const img = document.createElement("img");
 
@@ -161,7 +184,7 @@
       let vx = 4;
       let vy = 3;
 
-      function animate() {
+      function animate1() {
         x += vx;
         y += vy;
 
@@ -179,10 +202,10 @@
         img.style.left = `${x}px`;
         img.style.top = `${y}px`;
 
-        requestAnimationFrame(animate);
+        requestAnimationFrame(animate1);
       }
 
-      img.onload = animate;
+      img.onload = animate1;
     </script>
   </body>
 </html>
